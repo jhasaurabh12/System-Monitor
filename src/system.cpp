@@ -22,6 +22,7 @@ const string KernelNameFilepath ="/proc/version";
 const string OSnameFilePath="/etc/os-release";
 const string StatFilepath="/proc/stat";
 const string UptimeFilepath="/proc/uptime";
+const string MeminfoFilepath="/proc/meminfo";
 
 // TODO: Return the system's CPU
 Processor& System::Cpu() { return cpu_; }
@@ -41,8 +42,28 @@ std::string System::Kernel() {
     }
     return version;  
 }
-// TODO: Return the system's memory utilization
-float System::MemoryUtilization() { return 0.0; }
+// DONE: Return the system's memory utilization
+float System::MemoryUtilization() { 
+    
+    string key,memfree,memtotal;
+    ifstream fin(MeminfoFilepath);
+    string line;
+    while(getline(fin,line))
+    {
+        istringstream stream(line);
+        stream>>key;
+        if(key=="MemTotal:")
+            stream>>memtotal;
+        else if(key=="MemFree:")
+        {
+            stream>>memfree;
+            break;
+        }
+    }
+    float F_memfree=stof(memfree);
+    float F_memtotal=stof(memtotal);
+    return ((F_memtotal-F_memfree)/F_memtotal)*100; 
+}
 
 // DONE: Return the operating system name
 std::string System::OperatingSystem()
