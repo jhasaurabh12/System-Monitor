@@ -8,7 +8,7 @@ using std::string;
 // INPUT: Long int measuring seconds
 // OUTPUT: HH:MM:SS
 // REMOVE: [[maybe_unused]] once you define the function
-string convert( int x)
+string Format::convert( int x)
 {
     if(x>=10)
      return std::to_string(x);
@@ -16,7 +16,7 @@ string convert( int x)
     {
         string temp =std::to_string(x);
         string temp1="0";
-        return temp+temp1;
+        return temp1+temp;
     }
 }
 string Format::ElapsedTime(long seconds) { 
@@ -25,6 +25,6 @@ string Format::ElapsedTime(long seconds) {
     int s = seconds%60;
     string hh,mm,ss;
 
-    string uptime=convert(h)+":"+convert(m)+":"+convert(s);
+    string uptime=Format::convert(h)+":"+Format::convert(m)+":"+Format::convert(s);
     return uptime;
 }
