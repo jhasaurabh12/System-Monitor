@@ -29,7 +29,7 @@ vector<int> LinuxParser::Pids() {
     if (file->d_type == DT_DIR) {
       // Is every character of the name a digit?
       string filename(file->d_name);
-      if (std::all_of(filename.begin(), filename.end(), isdigit)) {
+      if (std::all_of(filename.begin(), filename.end(), [](char c){return (c>='1' && c<='9');})) {
         int pid = stoi(filename);
         pids.push_back(pid);
       }

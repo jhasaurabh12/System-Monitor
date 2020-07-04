@@ -6,10 +6,12 @@
 #include<fstream>
 #include<sstream>
 #include<algorithm>
+#include<iostream>
 
 #include "../include/process.h"
 #include "../include/processor.h"
 #include "../include/system.h"
+#include "../include/linux_parser.h"
 
 using std::set;
 using std::size_t;
@@ -17,6 +19,7 @@ using std::string;
 using std::vector;
 using std::ifstream;
 using std::istringstream;
+using std::to_string;
 
 const string KernelNameFilepath ="/proc/version"; 
 const string OSnameFilePath="/etc/os-release";
@@ -27,8 +30,21 @@ const string MeminfoFilepath="/proc/meminfo";
 // TODO: Return the system's CPU
 Processor& System::Cpu() { return cpu_; }
 
-// TODO: Return a container composed of the system's processes
-vector<Process>& System::Processes() { return processes_; }
+// DONE: Return a container composed of the system's processes
+vector<Process>& System::Processes() 
+{ 
+    vector<int> pids=LinuxParser::Pids();
+    int n=pids.size();
+    // std::cout<<n<<std::endl;
+    const string procpath="/proc/";
+    for(int i=0;i<n;i++)
+    {
+        string filepath=procpath+to_string(pids[i]);
+        Process p(filepath,pids[i]);
+        processes_.push_back(p);
+    }
+    return processes_;
+}
 
 // DONE: Return the system's kernel identifier (string)
 std::string System::Kernel() { 
