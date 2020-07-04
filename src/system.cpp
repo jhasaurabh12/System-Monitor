@@ -35,16 +35,15 @@ vector<Process>& System::Processes()
 { 
     vector<int> pids=LinuxParser::Pids();
     int n=pids.size();
-    vector<Process> proc_vector;
     // std::cout<<n<<std::endl;
     const string procpath="/proc/";
     for(int i=0;i<n;i++)
     {
         string filepath=procpath+to_string(pids[i]);
         Process p(filepath,pids[i]);
-        proc_vector.push_back(p);
+        processes_.push_back(p);
     }
-    return proc_vector;
+    return processes_;
 }
 
 // DONE: Return the system's kernel identifier (string)

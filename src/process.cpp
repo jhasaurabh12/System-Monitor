@@ -42,9 +42,10 @@ string Process::Command()
 }
 
 // DONE: Return this process's memory utilization
-string Process::Ram(){ 
+string Process::Ram()
+{ 
     string memUtilPath=proc_dirPath+"/status";
-    string key,value,line,mem="0",uid;
+    string key,value,line,mem,uid;
     ifstream fin(memUtilPath);
     if(fin)
     {
@@ -54,40 +55,23 @@ string Process::Ram(){
             istringstream stream(line);
             stream>>key>>value;
             if(key=="VmSize:")
-            {
                 mem=value;
-            }
+            else if(key=="Uid:")
+                uid=value;
         }
     }
-    long long int memKB= std::stoll(mem);
-    long long int memMB=memKB/1024;
-    return to_string(memMB);
+    UID=uid;
+    // int memKB= std::stoi(mem);
+    // float memMB=memKB/1024;
+    return mem;
 }
 
 // TODO: Return the user (name) that generated this process   //working
 
 string Process::User()
-{   
-    string memUtilPath=proc_dirPath+"/status";
-    string key,value,line,UID;
-    ifstream fin(memUtilPath);
-    if(fin)
-    {
-        
-        while(getline(fin,line))
-        {
-            istringstream stream(line);
-            stream>>key>>value;
-            if(key=="Uid:")
-            {
-                UID=value;
-                break;
-            }
-        }
-    }
-    fin.close();
+{ 
     string SearchUserFilepath="/etc/passwd";
-    fin.open(SearchUserFilepath);
+    ifstream fin(SearchUserFilepath);
     string username,mid,uid;
     if(fin)
     {
