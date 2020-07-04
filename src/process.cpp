@@ -44,7 +44,7 @@ string Process::Command()
 // DONE: Return this process's memory utilization
 string Process::Ram(){ 
     string memUtilPath=proc_dirPath+"/status";
-    string key,value,line,mem,uid;
+    string key,value,line,mem="0",uid;
     ifstream fin(memUtilPath);
     if(fin)
     {
