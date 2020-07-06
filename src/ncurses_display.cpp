@@ -16,7 +16,7 @@ using std::to_string;
 std::string NCursesDisplay::ProgressBar(float percent) {
   std::string result{"0%"};
   int size{50};
-  float bars{percent/size};
+  float bars{percent/2};
 
   for (int i{0}; i < size; ++i) {
     result += (i <= bars) ? '|' : ' ';
@@ -57,7 +57,7 @@ void NCursesDisplay::DisplayProcesses(std::vector<Process>& processes,
   int row{0};
   int const pid_column{2};
   int const user_column{9};
-  int const cpu_column{16};
+  int const cpu_column{18};
   int const ram_column{26};
   int const time_column{35};
   int const command_column{46};
@@ -92,16 +92,15 @@ void NCursesDisplay::Display(System& system, int n) {
   WINDOW* system_window = newwin(9, x_max - 1, 0, 0);
   WINDOW* process_window =
       newwin(3 + n, x_max - 1, system_window->_maxy + 1, 0);
-
+  scrollok(process_window,true);
+  scrollok(system_window,true);
   while (1) {
     init_pair(1, COLOR_BLUE, COLOR_BLACK);
     init_pair(2, COLOR_GREEN, COLOR_BLACK);
     box(system_window, 0, 0);
     box(process_window, 0, 0);
     DisplaySystem(system, system_window); //working till here
-    std::vector<Process>& procvector = system.Processes();
-    n=procvector.vector::size();
-    DisplayProcesses(procvector, process_window, n);   //
+    DisplayProcesses(system.Processes(), process_window, n);   //
     wrefresh(system_window);
     wrefresh(process_window);
     refresh();

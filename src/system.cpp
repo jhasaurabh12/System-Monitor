@@ -1,12 +1,3 @@
-#include <unistd.h>
-#include <cstddef>
-#include <set>
-#include <string>
-#include <vector>
-#include<fstream>
-#include<sstream>
-#include<algorithm>
-#include<iostream>
 
 #include "../include/process.h"
 #include "../include/processor.h"
@@ -27,10 +18,10 @@ const string StatFilepath="/proc/stat";
 const string UptimeFilepath="/proc/uptime";
 const string MeminfoFilepath="/proc/meminfo";
 
-// TODO: Return the system's CPU
+// Return the system's CPU
 Processor& System::Cpu() { return cpu_; }
 
-// DONE: Return a container composed of the system's processes
+// Return a container composed of the system's processes
 vector<Process>& System::Processes() 
 { 
     vector<int> pids=LinuxParser::Pids();
@@ -43,10 +34,11 @@ vector<Process>& System::Processes()
         Process p(filepath,pids[i]);
         processes_.push_back(p);
     }
+    std::sort(processes_.begin(),processes_.end());
     return processes_;
 }
 
-// DONE: Return the system's kernel identifier (string)
+// Return the system's kernel identifier (string)
 std::string System::Kernel() { 
     
     string temp1,temp2;
@@ -58,7 +50,7 @@ std::string System::Kernel() {
     }
     return version;  
 }
-// DONE: Return the system's memory utilization
+// Return the system's memory utilization
 float System::MemoryUtilization() { 
     
     string key,memfree,memtotal;
@@ -81,7 +73,7 @@ float System::MemoryUtilization() {
     return ((F_memtotal-F_memfree)/F_memtotal)*100; 
 }
 
-// DONE: Return the operating system name
+// Return the operating system name
 std::string System::OperatingSystem()
 { 
     string OSname,Osversion;
@@ -107,7 +99,7 @@ std::string System::OperatingSystem()
     return OSname; 
 }
 
-// DONE: Return the number of processes actively running on the system
+// Return the number of processes actively running on the system
 int System::RunningProcesses() { 
     string key,line,running;
     ifstream fin(StatFilepath);
@@ -127,7 +119,7 @@ int System::RunningProcesses() {
     return stoi(running); 
 }
 
-// DONE: Return the total number of processes on the system
+// Return the total number of processes on the system
 int System::TotalProcesses() { 
    string key,line,totalproc;
     ifstream fin(StatFilepath);
@@ -147,17 +139,7 @@ int System::TotalProcesses() {
     return stoi(totalproc); 
 }
 
-// DONE: Return the number of seconds since the system started running
+//Return the number of seconds since the system started running
 long int System::UpTime() { 
-    string idle,uptime="0";
-    ifstream fin(UptimeFilepath);
-    if(fin)
-    {
-        string line;
-        getline(fin,line);
-        istringstream stream(line);
-        stream>>uptime>>idle;
-        
-    }
-    return stol(uptime);
+    return LinuxParser::SystemUptime();
 }
