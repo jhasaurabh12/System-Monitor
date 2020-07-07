@@ -26,7 +26,7 @@ vector<Process>& System::Processes()
 { 
     vector<int> pids=LinuxParser::Pids();
     int n=pids.size();
-    // std::cout<<n<<std::endl;
+    processes_.clear();
     const string procpath="/proc/";
     for(int i=0;i<n;i++)
     {
