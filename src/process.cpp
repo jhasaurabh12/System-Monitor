@@ -32,8 +32,8 @@ int Process::Pid()
 float Process::CpuUtilization() const 
 { 
     string uptime;
-    long uptimeS;
-    long utimeS,stimeS,cutimeS,cstimeS,starttimeS;
+    long uptimeS=1;
+    long utimeS=0,stimeS=0,cutimeS=0,cstimeS=0,starttimeS=0;
     string UptimePath="/proc/uptime";
     ifstream fin(UptimePath);
     if(fin)
@@ -153,7 +153,7 @@ string Process::User()
     fin.close();
     string SearchUserFilepath="/etc/passwd";
     fin.open(SearchUserFilepath);
-    string username,mid,uid;
+    string username="username not found",mid,uid;
     if(fin)
     {
         string line;

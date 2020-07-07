@@ -42,7 +42,7 @@ vector<Process>& System::Processes()
 std::string System::Kernel() { 
     
     string temp1,temp2;
-    string version;
+    string version="";
     ifstream fin(KernelNameFilepath);
     if(fin)
     {
@@ -53,7 +53,7 @@ std::string System::Kernel() {
 // Return the system's memory utilization
 float System::MemoryUtilization() { 
     
-    string key,memfree,memtotal;
+    string key,memfree="0",memtotal="1";
     ifstream fin(MeminfoFilepath);
     string line;
     while(getline(fin,line))
@@ -76,7 +76,7 @@ float System::MemoryUtilization() {
 // Return the operating system name
 std::string System::OperatingSystem()
 { 
-    string OSname,Osversion;
+    string OSname="",Osversion;
     string temp,temp2,key;
     ifstream fin(OSnameFilePath);
     if(fin)
@@ -101,7 +101,7 @@ std::string System::OperatingSystem()
 
 // Return the number of processes actively running on the system
 int System::RunningProcesses() { 
-    string key,line,running;
+    string key,line,running="0";
     ifstream fin(StatFilepath);
     while(fin)
     {
@@ -121,7 +121,7 @@ int System::RunningProcesses() {
 
 // Return the total number of processes on the system
 int System::TotalProcesses() { 
-   string key,line,totalproc;
+   string key,line,totalproc="0";
     ifstream fin(StatFilepath);
     while(fin)
     {
